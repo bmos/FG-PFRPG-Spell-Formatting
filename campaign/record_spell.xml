@@ -64,7 +64,9 @@
 				</script>
 			</string_column_full>
 
-			<ft_columnh name="description_full" />
+			<ft_columnh name="description_full">
+			<readonly />
+			</ft_columnh>
 
 			<windowlist name="linkedspells">
 				<anchored>
