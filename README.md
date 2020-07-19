@@ -9,4 +9,4 @@ This extension has been fully tested with FantasyGrounds Classic 3.3.10 and Fant
 
 # Example Image
 [![unformatted spell](https://i.imgur.com/7Qkp72F.png)]
-[![formatted spell](link)]
+[![formatted spell](https://i.imgur.com/s4sPm1i.png)]
