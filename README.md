@@ -8,5 +8,4 @@ This extension has been tested with FantasyGrounds Classic 3.3.10 and FantasyGro
 * Spells on the actions tab will display with formatting when opened by clicking the link button.
 
 # Example Image
-<img src="https://i.imgur.com/7Qkp72F.png" alt="unformatted spell" width="375"/>
-<img src="https://i.imgur.com/s4sPm1i.png =250x" alt="formatted spell" width="375"/>
+<img src="https://i.imgur.com/RTDRGei.png" alt="spell formatting comparison"/>
