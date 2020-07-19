@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!-- 
+  Please see the license.html file included with this distribution for 
+  attribution and copyright information.
+-->
+
+<root>
+	<windowclass name="spelldesc2_stats">
+		<margins control="0,0,0,15" />
+		<sheetdata>
+			<anchor_column name="columnanchor" />
+
+			<label_column>
+				<static textres="spell_label_school" />
+			</label_column>
+			<string_column name="school" />
+
+			<label_column>
+				<static textres="level" />
+			</label_column>
+			<string_column name="level" />
+			
+			<label_column>
+				<static textres="spell_label_components" />
+			</label_column>
+			<string_column name="components" />
+
+			<label_column>
+				<static textres="spell_label_casttime" />
+			</label_column>
+			<string_column name="castingtime" />
+
+			<label_column>
+				<static textres="spell_label_range" />
+			</label_column>
+			<string_column name="range" />
+
+			<label_column>
+				<static textres="spell_label_effecttarget" />
+			</label_column>
+			<string_column name="effect" />
+
+			<label_column>
+				<static textres="spell_label_duration" />
+			</label_column>
+			<string_column name="duration" />
+
+			<label_column>
+				<static textres="spell_label_save" />
+			</label_column>
+			<string_column name="save" />
+
+			<label_column>
+				<static textres="spell_label_sr" />
+			</label_column>
+			<string_column name="sr" />
+
+			<string_column_full name="description">
+				<script>
+					function onInit()
+						window.description.setVisible(false)
+					end
+				</script>
+			</string_column_full>
+
+			<ft_columnh name="description_full" />
+
+			<windowlist name="linkedspells">
+				<anchored>
+					<top parent="columnanchor" anchor="bottom" relation="relative" offset="15" />
+					<left offset="5" />
+					<right offset="-5" />
+				</anchored>
+				<datasource>.linkedspells</datasource>
+				<class>linkedspell</class>
+				<noscroll />
+			</windowlist>
+		</sheetdata>
+	</windowclass>
+</root>
