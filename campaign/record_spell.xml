@@ -59,7 +59,14 @@
 			<string_column_full name="description">
 				<script>
 					function onInit()
-						window.description.setVisible(false)
+						local sDesc = window.description.getValue()
+						local sDesc_F = window.description_full.getValue()
+					
+						if sDesc_F and sDesc_F ~= '\n&lt;p&gt;&lt;/p&gt;' then
+							window.description.setVisible(false)
+						elseif sDesc_F then
+							window.description_full.setValue('\n&lt;p&gt;Delete and re-add spell to improve formatting.&lt;/p&gt;')
+						end
 					end
 				</script>
 			</string_column_full>
