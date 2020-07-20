@@ -8,4 +8,4 @@ This extension has been tested with FantasyGrounds Classic 3.3.10+ and FantasyGr
 * Spells on the actions tab will display with formatting when opened by clicking the link button.
 
 # Example Image
-<img src="https://i.imgur.com/RTDRGei.png" alt="spell formatting comparison"/>
+<img src="https://i.imgur.com/Hm0LFi7.png" alt="spell formatting comparison"/>
