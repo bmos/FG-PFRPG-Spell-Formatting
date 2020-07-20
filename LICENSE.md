@@ -8,11 +8,11 @@ SmiteWorks owns rights to code sections copied from their rulesets. These code s
 
 "Fantasy Grounds" is Copyright 2004-2020 SmiteWorks USA LLC.
 
-The CoreRPG ruleset and all included files are copyright 2004-2013, Smiteworks USA LLC.
+The CoreRPG ruleset and all included files are copyright 2004-2020, Smiteworks USA LLC.
 
-The 3.5E ruleset and all included files are copyright 2004-2013, Smiteworks USA LLC.
+The 3.5E ruleset and all included files are copyright 2004-2020, Smiteworks USA LLC.
 
-The PFRPG ruleset and all included files are copyright 2004-2013, Smiteworks USA LLC.
+The PFRPG ruleset and all included files are copyright 2004-2020, Smiteworks USA LLC.
 
 Rights to original code sections copied from the earlier [CoreRPG/MoreCore port by Alaxandir(AiurJordan)](https://svn.fantasygrounds.com/forums/showthread.php?57185-Coin-Weight-for-CoreRPG-(MoreCore-compatible)) remain as specified in that release.
 
