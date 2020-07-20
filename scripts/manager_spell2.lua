@@ -42,6 +42,43 @@ function convertSpellDescToString(nodeSpell)
 	end
 end
 
+function updateSpellDescString(nodeSpell)
+	local nodeDesc = nodeSpell.getChild("description_full");
+	if nodeDesc then
+		local sDescType = nodeDesc.getType();
+		if sDescType == "formattedtext" then
+			local sDesc = nodeDesc.getText();
+			local sValue = nodeDesc.getValue();
+
+			DB.setValue(nodeSpell, "description", "string", sDesc);
+			
+			local nodeLinkedSpells = nodeSpell.createChild("linkedspells");
+			if nodeLinkedSpells then
+				local nIndex = 1;
+				local nLinkStartB, nLinkStartE, sClass, sRecord = string.find(sValue, "<link class=\"([^\"]*)\" recordname=\"([^\"]*)\">", nIndex);
+				while nLinkStartB and sClass and sRecord do
+					local nLinkEndB, nLinkEndE = string.find(sValue, "</link>", nLinkStartE + 1);
+					
+					if nLinkEndB then
+						local sText = string.sub(sValue, nLinkStartE + 1, nLinkEndB - 1);
+						
+						local nodeLink = nodeLinkedSpells.createChild();
+						if nodeLink then
+							DB.setValue(nodeLink, "link", "windowreference", sClass, sRecord);
+							DB.setValue(nodeLink, "linkedname", "string", sText);
+						end
+						
+						nIndex = nLinkEndE + 1;
+						nLinkStartB, nLinkStartE, sClass, sRecord = string.find(sValue, "<link class=\"([^\"]*)\" recordname=\"([^\"]*)\">", nIndex);
+					else
+						nLinkStartB = nil;
+					end
+				end
+			end
+		end
+	end
+end
+
 function addSpell(nodeSource, nodeSpellClass, nLevel)
 	-- Validate
 	if not nodeSource or not nodeSpellClass or not nLevel then

@@ -65,7 +65,11 @@
 			</string_column_full>
 
 			<ft_columnh name="description_full">
-			<readonly />
+				<script>
+					function onValueChanged()
+						SpellManager2.updateSpellDescString(getDatabaseNode().getParent())
+					end
+				</script>
 			</ft_columnh>
 
 			<windowlist name="linkedspells">
