@@ -39,6 +39,7 @@ function convertSpellDescToString(nodeSpell)
 			local sDesc = nodeDesc.getText();
 			local sValue = nodeDesc.getValue();
 
+			nodeSpell.getChild("description").delete();
 			DB.setValue(nodeSpell, "description", "string", sDesc);
 			
 			local nodeLinkedSpells = nodeSpell.createChild("linkedspells");
