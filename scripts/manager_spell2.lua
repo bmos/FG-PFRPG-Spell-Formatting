@@ -3,6 +3,32 @@
 -- attribution and copyright information.
 --
 
+function upgradeSpellDescToFormattedText(nodeSpell)
+	local nodeDesc = nodeSpell.getChild("description");
+	if nodeDesc then
+		local sDescType = nodeDesc.getType();
+		if sDescType == "string" then
+			local sValue = "<p>" .. nodeDesc.getValue() .. "</p>";
+			sValue = sValue:gsub("\n", "</p><p>");
+
+			local nodeLinkedSpells = nodeSpell.getChild("linkedspells");
+			if nodeLinkedSpells then
+				if nodeLinkedSpells.getChildCount() > 0 then
+					sValue = sValue .. "<linklist>";
+					for _,v in pairs(nodeLinkedSpells.getChildren()) do
+						local sLinkName = DB.getValue(v, "linkedname", "");
+						local sLinkClass, sLinkRecord = DB.getValue(v, "link", "", "");
+						sValue = sValue .. "<link class=\"" .. sLinkClass .. "\" recordname=\"" .. sLinkRecord .. "\">" .. sLinkName .. "</link>";
+					end
+					sValue = sValue .. "</linklist>";
+				end
+			end
+
+			DB.setValue(nodeSpell, "description_full", "formattedtext", sValue .. "<p><b>To improve this spell's formatting, delete and re-add it.</b></p>");
+		end
+	end
+end
+
 function convertSpellDescToString(nodeSpell)
 	local nodeDesc = nodeSpell.getChild("description");
 	if nodeDesc then
@@ -12,7 +38,6 @@ function convertSpellDescToString(nodeSpell)
 			local sDesc = nodeDesc.getText();
 			local sValue = nodeDesc.getValue();
 
-			nodeDesc.delete();
 			DB.setValue(nodeSpell, "description", "string", sDesc);
 			
 			local nodeLinkedSpells = nodeSpell.createChild("linkedspells");
