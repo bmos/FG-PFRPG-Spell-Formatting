@@ -3,7 +3,7 @@
 	<!-- Please see the LICENSE.md file included with this distribution for attribution and copyright information. -->
 	<properties>
 		<name>Spell Formatting</name>
-		<version>1.1.1</version>
+		<version>1.1.2</version>
 		<author>bmos (Wil Thieme)</author>
 		<description>This extension allows formatting of spell descriptions from actions tab links.</description>
 		<ruleset>
