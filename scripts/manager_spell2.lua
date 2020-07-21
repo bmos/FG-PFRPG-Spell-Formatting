@@ -9,6 +9,7 @@ function upgradeSpellDescToFormattedText(nodeSpell)
 		local sDescType = nodeDesc.getType();
 		if sDescType == "string" then
 			local sValue = "<p>" .. nodeDesc.getValue() .. "</p>";
+			sValue = sValue:gsub("\n\n", "</p><p>");
 			sValue = sValue:gsub("\n", "</p><p>");
 
 			local nodeLinkedSpells = nodeSpell.getChild("linkedspells");
