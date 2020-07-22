@@ -70,7 +70,7 @@
 			<ft_columnh name="description_full">
 				<script>
 					function onInit()
-						if window.description_full.getValue() == '&lt;p&gt;&lt;/p&gt;' then
+						if window.description_full.getValue() == '\n&lt;p&gt;&lt;/p&gt;' or window.description_full.getValue() == '&lt;p&gt;&lt;/p&gt;' then
 							SpellManager2.upgradeSpellDescToFormattedText(getDatabaseNode().getParent())
 						end
 					end
