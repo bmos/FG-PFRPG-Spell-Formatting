@@ -59,9 +59,6 @@
 			<string_column_full name="description">
 				<script>
 					function onInit()
-						local sDesc = window.description.getValue()
-						local sDesc_F = window.description_full.getValue()
-					
 						window.description.setVisible(false)
 					end
 				</script>
