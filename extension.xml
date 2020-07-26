@@ -3,9 +3,9 @@
 	<!-- Please see the LICENSE.md file included with this distribution for attribution and copyright information. -->
 	<properties>
 		<name>Spell Formatting</name>
-		<version>1.1.3</version>
+		<version>1.1.4</version>
 		<author>bmos (Wil Thieme)</author>
-		<description>This extension allows formatting of spell descriptions from actions tab links.</description>
+		<description>This extension allows full formatting of the spell descriptions linked from the actions tab.</description>
 		<ruleset>
 			<name>PFRPG</name>
 		</ruleset>
