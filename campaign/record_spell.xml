@@ -65,17 +65,7 @@
 			</string_column_full>
 
 			<ft_columnh name="description_full">
-				<script>
-					function onInit()
-						if window.description_full.getValue() == '\n&lt;p&gt;&lt;/p&gt;' or window.description_full.getValue() == '&lt;p&gt;&lt;/p&gt;' then
-							SpellManager2.upgradeSpellDescToFormattedText(getDatabaseNode().getParent())
-						end
-					end
-				
-					function onValueChanged()
-						SpellManager2.updateSpellDescString(getDatabaseNode().getParent())
-					end
-				</script>
+			<script file="campaign/scripts/record_spell_description_full.lua" />
 			</ft_columnh>
 
 			<windowlist name="linkedspells">
