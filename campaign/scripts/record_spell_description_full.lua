@@ -3,13 +3,15 @@
 --
 
 function onInit()
-	if window.description_full.getValue() == '' or
-		window.description_full.getValue() == '<p></p>' or
-		window.description_full.getValue() == '\r<p></p>' or
-		window.description_full.getValue() == '\n<p></p>' or
-		window.description_full.getValue() == '\r\n<p></p>' then
-		
-		upgradeSpellDescToFormattedText(getDatabaseNode().getParent())
+	if window.description.getValue() ~= '' then
+		if window.description_full.getValue() == "<p><b>To improve this spell's formatting, delete and re-add it.</b></p" or
+			window.description_full.getValue() == '<p></p>' or
+			window.description_full.getValue() == '\r<p></p>' or
+			window.description_full.getValue() == '\n<p></p>' or
+			window.description_full.getValue() == '\r\n<p></p>' then
+			
+			upgradeSpellDescToFormattedText(getDatabaseNode().getParent())
+		end
 	end
 end
 
