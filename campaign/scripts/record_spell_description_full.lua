@@ -3,15 +3,10 @@
 --
 
 function onInit()
-	if window.description.getValue() ~= '' then
-		if window.description_full.getValue() == "<p><b>To improve this spell's formatting, delete and re-add it.</b></p" or
-			window.description_full.getValue() == '<p></p>' or
-			window.description_full.getValue() == '\r<p></p>' or
-			window.description_full.getValue() == '\n<p></p>' or
-			window.description_full.getValue() == '\r\n<p></p>' then
-			
-			upgradeSpellDescToFormattedText(getDatabaseNode().getParent())
-		end
+	if window.description.getValue() ~= '' and
+		(window.description_full.getValue() == '' or window.description_full.getValue() == '<p></p>') then
+		
+		upgradeSpellDescToFormattedText(getDatabaseNode().getParent())
 	end
 end
 
@@ -20,8 +15,7 @@ end
 function upgradeSpellDescToFormattedText(nodeSpell)
 	local nodeDesc = nodeSpell.getChild('description')
 	if nodeDesc then
-		local sDescType = nodeDesc.getType()
-		if sDescType == 'string' then
+		if not string.match(nodeDesc.getValue(), '<', 1) then
 			local sValue = '<p>' .. nodeDesc.getValue() .. '</p>'
 			sValue = sValue:gsub('\n\n', '</p><p>')
 			sValue = sValue:gsub('\r', '</p><p>')
