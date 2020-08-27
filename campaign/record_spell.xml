@@ -57,11 +57,7 @@
 			<string_column name="sr" />
 
 			<string_column_full name="description">
-				<script>
-					function onInit()
-						window.description.setVisible(false)
-					end
-				</script>
+				<invisible />
 			</string_column_full>
 
 			<ft_columnh name="description_full">
@@ -77,6 +73,7 @@
 				<datasource>.linkedspells</datasource>
 				<class>linkedspell</class>
 				<noscroll />
+				<invisible />
 			</windowlist>
 		</sheetdata>
 	</windowclass>
