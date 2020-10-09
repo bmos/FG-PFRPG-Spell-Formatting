@@ -85,8 +85,23 @@ function addSpell(nodeSource, nodeSpellClass, nLevel)
 	end
 	
 	-- Parse spell details to create actions
+	-- KEL Here tag parsing separate such that it is always parsed? Ursprüngliche tags mitnehmen? Mit Option?
 	if DB.getChildCount(nodeNewSpell, "actions") == 0 then
 		SpellManager.parseSpell(nodeNewSpell);
+	elseif StringManager.contains(Extension.getExtensions(), 'Full OverlayPackage with alternative icons')
+		or StringManager.contains(Extension.getExtensions(), 'Save versus tags')
+		or StringManager.contains(Extension.getExtensions(), 'Full OverlayPackage') then
+		local nodeActions = nodeNewSpell.createChild("actions");
+		if nodeActions then
+			local nodeAction = nodeActions.getChildren();
+			if nodeAction then
+				for k, v in pairs(nodeAction) do
+					if DB.getValue(v, "type") == "cast" then
+						SpellManager.addTags(nodeNewSpell, v);
+					end
+				end
+			end
+		end
 	end
 	
 	return nodeNewSpell;
