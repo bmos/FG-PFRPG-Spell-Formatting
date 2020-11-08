@@ -15,9 +15,11 @@ end
 function upgradeSpellDescToFormattedText(nodeSpell)
 	local nodeDesc = nodeSpell.getChild('description')
 	if nodeDesc then
-		if not string.match(nodeDesc.getValue(), '<', 1) then
+		if not string.match(nodeDesc.getValue(), '<p>', 1) then
 			local sValue = '<p>' .. nodeDesc.getValue() .. '</p>'
 			sValue = sValue:gsub('\n\n', '</p><p>')
+			sValue = sValue:gsub('\n', '</p><p>')
+			sValue = sValue:gsub('\r\r', '</p><p>')
 			sValue = sValue:gsub('\r', '</p><p>')
 
 			local nodeLinkedSpells = nodeSpell.getChild('linkedspells')
