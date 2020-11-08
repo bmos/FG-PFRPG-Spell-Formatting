@@ -3,9 +3,10 @@
 --
 
 function onInit()
-	if window.description.getValue() ~= '' and
-		(window.description_full.getValue() == '' or window.description_full.getValue() == '<p></p>') then
-		
+	local sDesc = window.description.getValue()
+	local sDescFull = window.description_full.getValue()
+	
+	if sDesc ~= '' and (sDescFull == '' or sDescFull == '<p></p>' or sDescFull == '<p />') then
 		upgradeSpellDescToFormattedText(getDatabaseNode().getParent())
 	end
 end
@@ -40,13 +41,9 @@ function upgradeSpellDescToFormattedText(nodeSpell)
 	end
 end
 
-function onValueChanged()
-	updateSpellDescString(getDatabaseNode().getParent())
-end
-
 --- This function saves changes made to the formattedtext in the description_full field back to the string version in the descriptionon field of the spell sheet.
 --	This is good protection in case the extension is removed in the future. With this in place, no custom notes/clarifications should be lost.
-function updateSpellDescString(nodeSpell)
+local function updateSpellDescString(nodeSpell)
 	local nodeDesc = nodeSpell.getChild('description_full');
 	if nodeDesc then
 		local sDescType = nodeDesc.getType();
@@ -81,4 +78,8 @@ function updateSpellDescString(nodeSpell)
 			end
 		end
 	end
+end
+
+function onValueChanged()
+	updateSpellDescString(getDatabaseNode().getParent())
 end
