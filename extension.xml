@@ -3,7 +3,7 @@
 	<!-- Please see the LICENSE.md file included with this distribution for attribution and copyright information. -->
 	<properties>
 		<name>Spell Formatting</name>
-		<version>1.2</version>
+		<version>1.3</version>
 		<loadorder>33</loadorder>
 		<author>bmos (Wil Thieme)</author>
 		<description>This extension allows full formatting of the spell descriptions linked from the actions tab.</description>
@@ -15,7 +15,7 @@
 		</ruleset>
 	</properties>
 
-	<announcement text="https://github.com/bmos/FG-PFRPG-Spell-Formatting\rPFRPG Spell Formatting v1.2:\rThis extension allows full formatting of the spell descriptions linked from the actions tab."  font="emotefont" />
+	<announcement text="https://github.com/bmos/FG-PFRPG-Spell-Formatting\rPFRPG Spell Formatting v1.3:\rThis extension allows full formatting of the spell descriptions linked from the actions tab."  font="emotefont" />
 
 	<base>
 		<!-- Campaign Records -->

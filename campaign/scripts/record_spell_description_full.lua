@@ -11,6 +11,18 @@ function onInit()
 	end
 end
 
+function getReferenceSpell(sSpellName)
+	local nEnd = string.find(sSpellName, '%(')
+	sSpellName = string.sub(sSpellName, 1, nEnd)
+	sSpellName = string.gsub(sSpellName, '%A+', '')
+	
+	local nodeReferenceSpell = DB.findNode('spelldesc.' .. sSpellName .. '@*')
+	if not nodeReferenceSpell then nodeReferenceSpell = DB.findNode('reference.spells.' .. sSpellName .. '@*') end
+	if nodeReferenceSpell then
+		return nodeReferenceSpell
+	end
+end
+
 --- This function converts an existing string value into formattedtext and writes it to the description_full field on the spell sheet.
 --	It also includes an informational message explaining that removing and re-adding the converted spell would be beneficial to its formatting.
 function upgradeSpellDescToFormattedText(nodeSpell)
@@ -36,7 +48,13 @@ function upgradeSpellDescToFormattedText(nodeSpell)
 				end
 			end
 
-			window.description_full.setValue(sValue .. "<p><b>To improve this spell's formatting, delete and re-add it.</b></p>")
+			local sSpellName = string.lower(DB.getValue(nodeSpell, 'name'))
+			if sSpellName then
+				local nodeReferenceSpell = getReferenceSpell(sSpellName)
+				if nodeReferenceSpell and nodeSpell then
+					DB.copyNode(nodeReferenceSpell.getChild('description'), nodeSpell.createChild('description_full', 'formattedtext'))
+				end
+			end
 		end
 	end
 end
