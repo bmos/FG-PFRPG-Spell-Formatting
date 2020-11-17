@@ -1,5 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?>
-<root version="3.3" release="1">
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!-- Please see the LICENSE.md file included with this distribution for attribution and copyright information. -->
+
+<root version='3.3' release='3'>
 	<!-- Please see the LICENSE.md file included with this distribution for attribution and copyright information. -->
 	<properties>
 		<name>Spell Formatting</name>
@@ -7,12 +10,8 @@
 		<loadorder>33</loadorder>
 		<author>bmos (Wil Thieme)</author>
 		<description>This extension allows full formatting of the spell descriptions linked from the actions tab.</description>
-		<ruleset>
-			<name>PFRPG</name>
-		</ruleset>
-		<ruleset>
-			<name>3.5E</name>
-		</ruleset>
+		<ruleset name="PFRPG" />
+		<ruleset name="3.5E" />
 	</properties>
 
 	<announcement text="https://github.com/bmos/FG-PFRPG-Spell-Formatting\rPFRPG Spell Formatting v1.3:\rThis extension allows full formatting of the spell descriptions linked from the actions tab."  font="emotefont" />
