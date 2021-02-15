@@ -63,7 +63,7 @@ local function updateSpellDescString(nodeSpell)
 			local sDesc = nodeDesc.getText();
 			local sValue = nodeDesc.getValue();
 
-			window.description.setValue(sDesc);
+			DB.setValue(nodeSpell, 'description', 'string', sDesc);
 			
 			local nodeLinkedSpells = nodeSpell.createChild('linkedspells');
 			if nodeLinkedSpells then
