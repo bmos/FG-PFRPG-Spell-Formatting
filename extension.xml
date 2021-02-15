@@ -20,6 +20,6 @@
 		<!-- Campaign Records -->
 		<includefile source="campaign/record_spell.xml" />
 		<!-- Scripts -->
-		<script name="SpellFormatting" file="scripts/manager_spell2.lua" />
+		<script name="SpellFormatting" file="scripts/spell_formatting.lua" />
 	</base>
 </root>
