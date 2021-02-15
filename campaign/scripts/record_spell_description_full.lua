@@ -2,30 +2,24 @@
 -- Please see the LICENSE.md file included with this distribution for attribution and copyright information.
 --
 
-function onInit()
-	local sDesc = window.description.getValue()
-	local sDescFull = window.description_full.getValue()
-	
-	if sDesc ~= '' and (sDescFull == '' or sDescFull == '<p></p>' or sDescFull == '<p />') then
-		upgradeSpellDescToFormattedText(getDatabaseNode().getParent())
+local function getReferenceSpell(string_spell_name)
+	local number_name_end = string.find(string_spell_name, '%(')
+	string_spell_name = string_spell_name:sub(1, number_name_end)
+	string_spell_name = string_spell_name:gsub('.+:', '')
+	string_spell_name = string_spell_name:gsub(',.+', '')
+	string_spell_name = string_spell_name:gsub('%[%a%]', '')
+	string_spell_name = string_spell_name:gsub('%A+', '')
+	string_spell_name = StringManager.trim(string_spell_name)
+	if string.find(string_spell_name, 'greater') then
+		string_spell_name = string_spell_name:gsub('greater', '') .. 'greater'
 	end
-end
-
-function getReferenceSpell(sSpellName)
-	local nEnd = string.find(sSpellName, '%(')
-	sSpellName = string.sub(sSpellName, 1, nEnd)
-	sSpellName = string.gsub(sSpellName, '%A+', '')
 	
-	local nodeReferenceSpell = DB.findNode('spelldesc.' .. sSpellName .. '@*')
-	if not nodeReferenceSpell then nodeReferenceSpell = DB.findNode('reference.spells.' .. sSpellName .. '@*') end
-	if nodeReferenceSpell then
-		return nodeReferenceSpell
-	end
+	return DB.findNode('spelldesc.' .. string_spell_name .. '@*') or DB.findNode('reference.spells.' .. string_spell_name .. '@*')
 end
 
 --- This function converts an existing string value into formattedtext and writes it to the description_full field on the spell sheet.
 --	It also includes an informational message explaining that removing and re-adding the converted spell would be beneficial to its formatting.
-function upgradeSpellDescToFormattedText(nodeSpell)
+local function upgradeSpellDescToFormattedText(nodeSpell)
 	local nodeDesc = nodeSpell.getChild('description')
 	if nodeDesc then
 		if not string.match(nodeDesc.getValue(), '<p>', 1) then
@@ -99,5 +93,14 @@ local function updateSpellDescString(nodeSpell)
 end
 
 function onValueChanged()
-	updateSpellDescString(getDatabaseNode().getParent())
+	updateSpellDescString(window.getDatabaseNode())
+end
+
+function onInit()
+	local sDesc = window.description.getValue()
+	local sDescFull = window.description_full.getValue()
+	
+	if sDesc ~= '' and (sDescFull == '' or sDescFull == '<p></p>' or sDescFull == '<p />') then
+		upgradeSpellDescToFormattedText(getDatabaseNode().getParent())
+	end
 end

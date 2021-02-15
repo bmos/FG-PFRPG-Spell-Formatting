@@ -5,22 +5,9 @@
 -- local convertSpellDescToString_old = nil
 local addSpell_old = nil
 
--- Function Overrides
-function onInit()
-	-- convertSpellDescToString_old = SpellManager.convertSpellDescToString;
-	-- SpellManager.convertSpellDescToString = convertSpellDescToString_new;
-	addSpell_old = SpellManager.addSpell;
-	SpellManager.addSpell = addSpell_new;
-end
-
-function onClose()
-	-- SpellManager.convertSpellDescToString = convertSpellDescToString_old;
-	SpellManager.addSpell = addSpell_old;
-end
-
 ---	This function sets up spell descriptions for the new player copy of the spell.
 --	It is implemented here so that it can write the fully-formatted text to description_full before it discards it in favor of the string version.
-function convertSpellDescToString_new(nodeSpell)
+local function convertSpellDescToString_new(nodeSpell)
 	local nodeDesc = nodeSpell.getChild('description');
 	if nodeDesc then
 		DB.setValue(nodeSpell, 'description_full', 'formattedtext', nodeDesc.getValue());
@@ -61,7 +48,7 @@ function convertSpellDescToString_new(nodeSpell)
 end
 
 ---	This function copies the fully-formatted text into newly-created spells
-function addSpell_new(nodeSource, nodeSpellClass, nLevel)
+local function addSpell_new(nodeSource, nodeSpellClass, nLevel)
 	-- Validate
 	if not nodeSource or not nodeSpellClass or not nLevel then
 		return nil;
@@ -77,4 +64,17 @@ function addSpell_new(nodeSource, nodeSpellClass, nLevel)
 	DB.setValue(nodeNewSpell, 'description_full', 'formattedtext', DB.getValue(nodeSource, 'description', '<p></p>'));
 	
 	return nodeNewSpell;
+end
+
+-- Function Overrides
+function onInit()
+	-- convertSpellDescToString_old = SpellManager.convertSpellDescToString;
+	-- SpellManager.convertSpellDescToString = convertSpellDescToString_new;
+	addSpell_old = SpellManager.addSpell;
+	SpellManager.addSpell = addSpell_new;
+end
+
+function onClose()
+	-- SpellManager.convertSpellDescToString = convertSpellDescToString_old;
+	SpellManager.addSpell = addSpell_old;
 end
