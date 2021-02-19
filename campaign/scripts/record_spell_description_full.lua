@@ -3,6 +3,10 @@
 --
 
 local function getReferenceSpell(string_spell_name)
+	if not sSpellName then
+		return
+	end
+	
 	local number_name_end = string.find(string_spell_name, '%(')
 	string_spell_name = string_spell_name:sub(1, number_name_end)
 	string_spell_name = string_spell_name:gsub('.+:', '')
@@ -18,8 +22,13 @@ local function getReferenceSpell(string_spell_name)
 end
 
 --- This function converts an existing string value into formattedtext and writes it to the description_full field on the spell sheet.
---	It also includes an informational message explaining that removing and re-adding the converted spell would be beneficial to its formatting.
+--	It checks for linked spells and appends them to the description.
+--	It then looks for a better description in loaded spell modules.
 local function upgradeSpellDescToFormattedText(nodeSpell)
+	if not nodeSpell then
+		return
+	end
+
 	local nodeDesc = nodeSpell.getChild('description')
 	if nodeDesc then
 		if not string.match(nodeDesc.getValue(), '<p>', 1) then
@@ -42,12 +51,9 @@ local function upgradeSpellDescToFormattedText(nodeSpell)
 				end
 			end
 
-			local sSpellName = string.lower(DB.getValue(nodeSpell, 'name'))
-			if sSpellName then
-				local nodeReferenceSpell = getReferenceSpell(sSpellName)
-				if nodeReferenceSpell and nodeSpell then
-					DB.copyNode(nodeReferenceSpell.getChild('description'), nodeSpell.createChild('description_full', 'formattedtext'))
-				end
+			local nodeReferenceSpell = getReferenceSpell(string.lower(DB.getValue(nodeSpell, 'name')))
+			if nodeReferenceSpell then
+				DB.copyNode(nodeReferenceSpell.getChild('description'), nodeSpell.createChild('description_full', 'formattedtext'))
 			end
 		end
 	end
