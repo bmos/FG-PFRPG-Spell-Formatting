@@ -54,6 +54,8 @@ local function upgradeSpellDescToFormattedText(nodeSpell)
 			local nodeReferenceSpell = getReferenceSpell(string.lower(DB.getValue(nodeSpell, 'name')))
 			if nodeReferenceSpell then
 				DB.copyNode(nodeReferenceSpell.getChild('description'), nodeSpell.createChild('description_full', 'formattedtext'))
+			else
+				DB.setValue(nodeSpell, 'description_full', 'formattedtext', sValue)
 			end
 		end
 	end
