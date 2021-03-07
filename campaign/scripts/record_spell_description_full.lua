@@ -3,21 +3,39 @@
 --
 
 local function getReferenceSpell(string_spell_name)
-	if not sSpellName then
+	if not string_spell_name then
 		return
 	end
-	
+
+	-- remove anything after open parentheses
 	local number_name_end = string.find(string_spell_name, '%(')
 	string_spell_name = string_spell_name:sub(1, number_name_end)
+
+	-- remove certain sets of characters
+	string_spell_name = string_spell_name:gsub('%u%u%u%u', '')
+	string_spell_name = string_spell_name:gsub('%u%u%u', '')
+	string_spell_name = string_spell_name:gsub('AP%d+', '')
+	string_spell_name = string_spell_name:gsub('%u%u', '')
 	string_spell_name = string_spell_name:gsub('.+:', '')
 	string_spell_name = string_spell_name:gsub(',.+', '')
 	string_spell_name = string_spell_name:gsub('%[%a%]', '')
 	string_spell_name = string_spell_name:gsub('%A+', '')
+
+	-- remove extra spaces at beginning or end
 	string_spell_name = StringManager.trim(string_spell_name)
+
+	-- remove uppercase D or M at end of name
+	number_name_end = string.find(string_spell_name, 'D', string.len(string_spell_name)) or string.find(string_spell_name, 'M', string.len(string_spell_name))
+	if number_name_end then string_spell_name = string_spell_name:sub(1, number_name_end - 1) end
+
+	-- convert to lower-case
+	string_spell_name = string_spell_name:lower()
+
+	-- move "greater" to the end in case it's at the beginning
 	if string.find(string_spell_name, 'greater') then
 		string_spell_name = string_spell_name:gsub('greater', '') .. 'greater'
 	end
-	
+
 	return DB.findNode('spelldesc.' .. string_spell_name .. '@*') or DB.findNode('reference.spells.' .. string_spell_name .. '@*')
 end
 
