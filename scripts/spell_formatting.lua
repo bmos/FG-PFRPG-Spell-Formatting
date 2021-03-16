@@ -9,13 +9,13 @@ local addSpell_old = nil
 local function addSpell_new(nodeSource, nodeSpellClass, nLevel)
 	-- Validate
 	if not nodeSource or not nodeSpellClass or not nLevel then
-		return nil;
+		return
 	end
 	
 	-- Get the new spell entry
 	local nodeNewSpell = addSpell_old(nodeSource, nodeSpellClass, nLevel)
 	if not nodeNewSpell then
-		return nil;
+		return
 	end
 	
 	-- Copy the formatted spell details over
