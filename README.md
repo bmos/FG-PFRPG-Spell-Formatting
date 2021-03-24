@@ -6,6 +6,7 @@ This extension has been tested with [FantasyGrounds Unity](https://www.fantasygr
 
 # Features
 * Spells on the actions tab will display with formatting when opened by clicking the link button.
+* Changes to the fully-formatted description will be saved to the plain-text description as well so that they will not be lost if you stop using this extension.
 
 # Example Image
 <img src="https://i.imgur.com/Hm0LFi7.png" alt="spell formatting comparison"/>
