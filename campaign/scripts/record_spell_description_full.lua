@@ -50,29 +50,29 @@ local function upgradeSpellDescToFormattedText(nodeSpell)
 	local nodeDesc = nodeSpell.getChild('description')
 	if nodeDesc then
 		if not string.match(nodeDesc.getValue(), '<p>', 1) then
-			local sValue = '<p>' .. nodeDesc.getValue() .. '</p>'
-			sValue = sValue:gsub('\n\n', '</p><p>')
-			sValue = sValue:gsub('\n', '</p><p>')
-			sValue = sValue:gsub('\r\r', '</p><p>')
-			sValue = sValue:gsub('\r', '</p><p>')
-
-			local nodeLinkedSpells = nodeSpell.getChild('linkedspells')
-			if nodeLinkedSpells then
-				if nodeLinkedSpells.getChildCount() > 0 then
-					sValue = sValue .. '<linklist>'
-					for _,v in pairs(nodeLinkedSpells.getChildren()) do
-						local sLinkName = DB.getValue(v, 'linkedname', '')
-						local sLinkClass, sLinkRecord = DB.getValue(v, 'link', '', '')
-						sValue = sValue .. '<link class=\'' .. sLinkClass .. '\' recordname=\'' .. sLinkRecord .. '\'>' .. sLinkName .. '</link>'
-					end
-					sValue = sValue .. '</linklist>'
-				end
-			end
-
 			local nodeReferenceSpell = getReferenceSpell(string.lower(DB.getValue(nodeSpell, 'name')))
 			if nodeReferenceSpell then
 				DB.copyNode(nodeReferenceSpell.getChild('description'), nodeSpell.createChild('description_full', 'formattedtext'))
 			else
+				local sValue = '<p>' .. nodeDesc.getValue() .. '</p>'
+				sValue = sValue:gsub('\n\n', '</p><p>')
+				sValue = sValue:gsub('\n', '</p><p>')
+				sValue = sValue:gsub('\r\r', '</p><p>')
+				sValue = sValue:gsub('\r', '</p><p>')
+				
+				local nodeLinkedSpells = nodeSpell.getChild('linkedspells')
+				if nodeLinkedSpells then
+					if nodeLinkedSpells.getChildCount() > 0 then
+						sValue = sValue .. '<linklist>'
+						for _,v in pairs(nodeLinkedSpells.getChildren()) do
+							local sLinkName = DB.getValue(v, 'linkedname', '')
+							local sLinkClass, sLinkRecord = DB.getValue(v, 'link', '', '')
+							sValue = sValue .. '<link class=\'' .. sLinkClass .. '\' recordname=\'' .. sLinkRecord .. '\'>' .. sLinkName .. '</link>'
+						end
+						sValue = sValue .. '</linklist>'
+					end
+				end
+				
 				DB.setValue(nodeSpell, 'description_full', 'formattedtext', sValue)
 			end
 		end
