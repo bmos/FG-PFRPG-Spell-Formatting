@@ -3,8 +3,8 @@
 --
 
 local function getReferenceSpell(string_spell_name)
-	local is_greater = string.find(string_spell_name, 'greater')
-	local is_lesser = string.find(string_spell_name, 'lesser')
+	local is_greater = string.find(string_spell_name:lower(), 'greater')
+	local is_lesser = string.find(string_spell_name:lower(), 'lesser')
 	
 	-- remove anything after open parentheses
 	local number_name_end = string.find(string_spell_name, '%(')
@@ -28,10 +28,12 @@ local function getReferenceSpell(string_spell_name)
 	string_spell_name = string_spell_name:lower()
 
 	if is_greater then
+		string_spell_name = string_spell_name:gsub('greater', '')
 		string_spell_name = string_spell_name .. 'greater'
 	end
 
 	if is_lesser then
+		string_spell_name = string_spell_name:gsub('lesser', '')
 		string_spell_name = string_spell_name .. 'lesser'
 	end
 
