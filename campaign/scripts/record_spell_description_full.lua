@@ -3,9 +3,29 @@
 --
 
 local function getReferenceSpell(string_spell_name)
-	local is_greater = string.find(string_spell_name:lower(), 'greater')
-	local is_lesser = string.find(string_spell_name:lower(), 'lesser')
-	
+	local is_greater = string.find(string_spell_name:lower(), ', greater')
+	local is_lesser = string.find(string_spell_name:lower(), ', lesser')
+	local is_communal = string.find(string_spell_name:lower(), ', communal')
+	local is_mass = string.find(string_spell_name:lower(), ', mass')
+
+	-- remove tags from spell name
+	if is_greater then
+		string_spell_name = string_spell_name:gsub(', greater', '')
+		string_spell_name = string_spell_name:gsub(', Greater', '')
+	end
+	if is_lesser then
+		string_spell_name = string_spell_name:gsub(', lesser', '')
+		string_spell_name = string_spell_name:gsub(', Lesser', '')
+	end
+	if is_communal then
+		string_spell_name = string_spell_name:gsub(', communal', '')
+		string_spell_name = string_spell_name:gsub(', Communal', '')
+	end
+	if is_mass then
+		string_spell_name = string_spell_name:gsub(', mass', '')
+		string_spell_name = string_spell_name:gsub(', Mass', '')
+	end
+
 	-- remove anything after open parentheses
 	local number_name_end = string.find(string_spell_name, '%(')
 	string_spell_name = string_spell_name:sub(1, number_name_end)
@@ -27,14 +47,18 @@ local function getReferenceSpell(string_spell_name)
 	-- convert to lower-case
 	string_spell_name = string_spell_name:lower()
 
+	-- append relevant tags to end of spell name
 	if is_greater then
-		string_spell_name = string_spell_name:gsub('greater', '')
 		string_spell_name = string_spell_name .. 'greater'
 	end
-
 	if is_lesser then
-		string_spell_name = string_spell_name:gsub('lesser', '')
 		string_spell_name = string_spell_name .. 'lesser'
+	end
+	if is_communal then
+		string_spell_name = string_spell_name .. 'communal'
+	end
+	if is_mass then
+		string_spell_name = string_spell_name .. 'mass'
 	end
 
 	return DB.findNode('spelldesc.' .. string_spell_name .. '@*') or DB.findNode('reference.spells.' .. string_spell_name .. '@*')
