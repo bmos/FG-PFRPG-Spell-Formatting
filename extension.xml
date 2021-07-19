@@ -4,7 +4,7 @@
 
 <root version='3.3' release='3'>
 	<properties>
-		<name>Spell Formatting</name>
+		<name>Feature: Spell Formatting Improvement</name>
 		<version>1.6</version>
 		<loadorder>33</loadorder>
 		<author>bmos (Wil Thieme)</author>
