@@ -6,14 +6,14 @@
 local addSpell_old = nil
 
 ---	This function copies the fully-formatted text into newly-created spells
-local function addSpell_new(nodeSource, nodeSpellClass, nLevel)
+local function addSpell_new(nodeSource, nodeSpellClass, nLevel, ...)
 	-- Validate
 	if not nodeSource or not nodeSpellClass or not nLevel then
 		return
 	end
 	
 	-- Get the new spell entry
-	local nodeNewSpell = addSpell_old(nodeSource, nodeSpellClass, nLevel)
+	local nodeNewSpell = addSpell_old(nodeSource, nodeSpellClass, nLevel, ...)
 	if not nodeNewSpell then
 		return
 	end
