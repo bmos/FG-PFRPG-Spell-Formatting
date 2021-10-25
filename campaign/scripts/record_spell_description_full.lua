@@ -42,10 +42,6 @@ local function getReferenceSpell(string_spell_name)
 		string_spell_name = string_spell_name:gsub('Quickened', '')
 	end
 
-	-- remove anything after open parentheses
-	local number_name_end = string.find(string_spell_name, '%(')
-	string_spell_name = string_spell_name:sub(1, number_name_end)
-
 	-- remove certain sets of characters
 	string_spell_name = string_spell_name:gsub('%u%u%u%u', '')
 	string_spell_name = string_spell_name:gsub('%u%u%u', '')
@@ -53,7 +49,8 @@ local function getReferenceSpell(string_spell_name)
 	string_spell_name = string_spell_name:gsub('%u%u', '')
 	string_spell_name = string_spell_name:gsub('.+:', '')
 	string_spell_name = string_spell_name:gsub(',.+', '')
-	string_spell_name = string_spell_name:gsub('%[%a%]', '')
+	string_spell_name = string_spell_name:gsub('%[.-%]', '')
+	string_spell_name = string_spell_name:gsub('%(.-%)', '')
 	string_spell_name = string_spell_name:gsub('%A+', '')
 
 	-- remove uppercase D or M at end of name
