@@ -1,4 +1,4 @@
--- 
+--
 -- Please see the LICENSE.md file included with this distribution for attribution and copyright information.
 --
 
@@ -54,7 +54,7 @@ local function getReferenceSpell(string_spell_name)
 	string_spell_name = string_spell_name:gsub('%A+', '')
 
 	-- remove uppercase D or M at end of name
-	number_name_end = string.find(string_spell_name, 'D', string.len(string_spell_name)) or string.find(string_spell_name, 'M', string.len(string_spell_name))
+	local number_name_end = string_spell_name:find('D', string.len(string_spell_name)) or string_spell_name:find('M', string.len(string_spell_name))
 	if number_name_end then string_spell_name = string_spell_name:sub(1, number_name_end - 1) end
 
 	-- convert to lower-case
@@ -97,7 +97,7 @@ local function upgradeSpellDescToFormattedText(nodeSpell)
 				sValue = sValue:gsub('\n', '</p><p>')
 				sValue = sValue:gsub('\r\r', '</p><p>')
 				sValue = sValue:gsub('\r', '</p><p>')
-				
+
 				local nodeLinkedSpells = nodeSpell.getChild('linkedspells')
 				if nodeLinkedSpells then
 					if nodeLinkedSpells.getChildCount() > 0 then
@@ -110,14 +110,14 @@ local function upgradeSpellDescToFormattedText(nodeSpell)
 						sValue = sValue .. '</linklist>'
 					end
 				end
-				
+
 				DB.setValue(nodeSpell, 'description_full', 'formattedtext', sValue)
 			end
 		end
 	end
 end
 
---- This function saves changes made to the formattedtext in the description_full field back to the string version in the descriptionon field of the spell sheet.
+--- This function saves changes made to the formattedtext in the description_full field back to the basic string version.
 --	This is good protection in case the extension is removed in the future. With this in place, no custom notes/clarifications should be lost.
 local function updateSpellDescString(nodeSpell)
 	local nodeDesc = nodeSpell.getChild('description_full');
@@ -128,23 +128,23 @@ local function updateSpellDescString(nodeSpell)
 			local sValue = nodeDesc.getValue();
 
 			DB.setValue(nodeSpell, 'description', 'string', sDesc);
-			
+
 			local nodeLinkedSpells = nodeSpell.createChild('linkedspells');
 			if nodeLinkedSpells then
 				local nIndex = 1;
 				local nLinkStartB, nLinkStartE, sClass, sRecord = string.find(sValue, '<link class=\'([^\']*)\' recordname=\'([^\']*)\'>', nIndex);
 				while nLinkStartB and sClass and sRecord do
 					local nLinkEndB, nLinkEndE = string.find(sValue, '</link>', nLinkStartE + 1);
-					
+
 					if nLinkEndB then
 						local sText = string.sub(sValue, nLinkStartE + 1, nLinkEndB - 1);
-						
+
 						local nodeLink = nodeLinkedSpells.createChild();
 						if nodeLink then
 							DB.setValue(nodeLink, 'link', 'windowreference', sClass, sRecord);
 							DB.setValue(nodeLink, 'linkedname', 'string', sText);
 						end
-						
+
 						nIndex = nLinkEndE + 1;
 						nLinkStartB, nLinkStartE, sClass, sRecord = string.find(sValue, '<link class=\'([^\']*)\' recordname=\'([^\']*)\'>', nIndex);
 					else
@@ -163,7 +163,7 @@ end
 function onInit()
 	local sDesc = window.description.getValue()
 	local sDescFull = window.description_full.getValue()
-	
+
 	if sDesc ~= '' and (sDescFull == '' or sDescFull == '<p></p>' or sDescFull == '<p />') then
 		upgradeSpellDescToFormattedText(getDatabaseNode().getParent())
 	end
