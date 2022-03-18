@@ -54,7 +54,7 @@ local function getReferenceSpell(string_spell_name)
 	string_spell_name = string_spell_name:gsub('%A+', '')
 
 	-- remove uppercase D or M at end of name
-	local number_string_length = string.len(string_spell_name))
+	local number_string_length = string.len(string_spell_name)
 	local number_name_end = (
 		string_spell_name:find('D', number_string_length) or string_spell_name:find('M', number_string_length)
 	)
