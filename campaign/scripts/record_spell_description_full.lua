@@ -54,7 +54,10 @@ local function getReferenceSpell(string_spell_name)
 	string_spell_name = string_spell_name:gsub('%A+', '')
 
 	-- remove uppercase D or M at end of name
-	local number_name_end = string_spell_name:find('D', string.len(string_spell_name)) or string_spell_name:find('M', string.len(string_spell_name))
+	local number_string_length = string.len(string_spell_name))
+	local number_name_end = (
+		string_spell_name:find('D', number_string_length) or string_spell_name:find('M', number_string_length)
+	)
 	if number_name_end then string_spell_name = string_spell_name:sub(1, number_name_end - 1) end
 
 	-- convert to lower-case
@@ -74,10 +77,15 @@ local function getReferenceSpell(string_spell_name)
 		string_spell_name = string_spell_name .. 'mass'
 	end
 
-	return DB.findNode('spelldesc.' .. string_spell_name .. '@*') or DB.findNode('reference.spells.' .. string_spell_name .. '@*')
+	return (
+		DB.findNode('spelldesc.' .. string_spell_name .. '@*')
+		or
+		DB.findNode('reference.spells.' .. string_spell_name .. '@*')
+	)
 end
 
---- This function converts an existing string value into formattedtext and writes it to the description_full field on the spell sheet.
+--- This function converts an existing string value into formattedtext
+--	Then it writes it to the description_full field on the spell sheet.
 --	It checks for linked spells and appends them to the description.
 --	It then looks for a better description in loaded spell modules.
 local function upgradeSpellDescToFormattedText(nodeSpell)
@@ -90,7 +98,8 @@ local function upgradeSpellDescToFormattedText(nodeSpell)
 		if not string.match(nodeDesc.getValue(), '<p>', 1) then
 			local nodeReferenceSpell = getReferenceSpell(string.lower(DB.getValue(nodeSpell, 'name')))
 			if nodeReferenceSpell then
-				DB.copyNode(nodeReferenceSpell.getChild('description'), nodeSpell.createChild('description_full', 'formattedtext'))
+				local nodeReferenceDesc = nodeReferenceSpell.getChild('description')
+				DB.copyNode(nodeReferenceDesc, nodeSpell.createChild('description_full', 'formattedtext'))
 			else
 				local sValue = '<p>' .. nodeDesc.getValue() .. '</p>'
 				sValue = sValue:gsub('\n\n', '</p><p>')
@@ -105,7 +114,9 @@ local function upgradeSpellDescToFormattedText(nodeSpell)
 						for _,v in pairs(nodeLinkedSpells.getChildren()) do
 							local sLinkName = DB.getValue(v, 'linkedname', '')
 							local sLinkClass, sLinkRecord = DB.getValue(v, 'link', '', '')
-							sValue = sValue .. '<link class=\'' .. sLinkClass .. '\' recordname=\'' .. sLinkRecord .. '\'>' .. sLinkName .. '</link>'
+							sValue = (
+								sValue .. '<link class=\'' .. sLinkClass .. '\' recordname=\'' .. sLinkRecord .. '\'>' .. sLinkName .. '</link>'
+							)
 						end
 						sValue = sValue .. '</linklist>'
 					end
@@ -132,7 +143,11 @@ local function updateSpellDescString(nodeSpell)
 			local nodeLinkedSpells = nodeSpell.createChild('linkedspells');
 			if nodeLinkedSpells then
 				local nIndex = 1;
-				local nLinkStartB, nLinkStartE, sClass, sRecord = string.find(sValue, '<link class=\'([^\']*)\' recordname=\'([^\']*)\'>', nIndex);
+				local nLinkStartB, nLinkStartE, sClass, sRecord = string.find(
+					sValue,
+					'<link class=\'([^\']*)\' recordname=\'([^\']*)\'>',
+					nIndex
+				);
 				while nLinkStartB and sClass and sRecord do
 					local nLinkEndB, nLinkEndE = string.find(sValue, '</link>', nLinkStartE + 1);
 
@@ -146,7 +161,9 @@ local function updateSpellDescString(nodeSpell)
 						end
 
 						nIndex = nLinkEndE + 1;
-						nLinkStartB, nLinkStartE, sClass, sRecord = string.find(sValue, '<link class=\'([^\']*)\' recordname=\'([^\']*)\'>', nIndex);
+						nLinkStartB, nLinkStartE, sClass, sRecord = string.find(
+							sValue, '<link class=\'([^\']*)\' recordname=\'([^\']*)\'>', nIndex
+						);
 					else
 						nLinkStartB = nil;
 					end
