@@ -1,7 +1,6 @@
 --
 -- Please see the LICENSE.md file included with this distribution for attribution and copyright information.
 --
-
 local function getReferenceSpell(string_spell_name)
 	local string_spell_name_lower = string_spell_name:lower()
 	local is_greater = (string.find(string_spell_name_lower, ', greater') ~= nil)
@@ -55,33 +54,19 @@ local function getReferenceSpell(string_spell_name)
 
 	-- remove uppercase D or M at end of name
 	local number_string_length = string.len(string_spell_name)
-	local number_name_end = (
-		string_spell_name:find('D', number_string_length) or string_spell_name:find('M', number_string_length)
-	)
+	local number_name_end = (string_spell_name:find('D', number_string_length) or string_spell_name:find('M', number_string_length))
 	if number_name_end then string_spell_name = string_spell_name:sub(1, number_name_end - 1) end
 
 	-- convert to lower-case
 	string_spell_name = string_spell_name:lower()
 
 	-- append relevant tags to end of spell name
-	if is_greater then
-		string_spell_name = string_spell_name .. 'greater'
-	end
-	if is_lesser then
-		string_spell_name = string_spell_name .. 'lesser'
-	end
-	if is_communal then
-		string_spell_name = string_spell_name .. 'communal'
-	end
-	if is_mass then
-		string_spell_name = string_spell_name .. 'mass'
-	end
+	if is_greater then string_spell_name = string_spell_name .. 'greater' end
+	if is_lesser then string_spell_name = string_spell_name .. 'lesser' end
+	if is_communal then string_spell_name = string_spell_name .. 'communal' end
+	if is_mass then string_spell_name = string_spell_name .. 'mass' end
 
-	return (
-		DB.findNode('spelldesc.' .. string_spell_name .. '@*')
-		or
-		DB.findNode('reference.spells.' .. string_spell_name .. '@*')
-	)
+	return (DB.findNode('spelldesc.' .. string_spell_name .. '@*') or DB.findNode('reference.spells.' .. string_spell_name .. '@*'))
 end
 
 --- This function converts an existing string value into formattedtext
@@ -89,9 +74,7 @@ end
 --	It checks for linked spells and appends them to the description.
 --	It then looks for a better description in loaded spell modules.
 local function upgradeSpellDescToFormattedText(nodeSpell)
-	if not nodeSpell then
-		return
-	end
+	if not nodeSpell then return end
 
 	local nodeDesc = nodeSpell.getChild('description')
 	if nodeDesc then
@@ -111,12 +94,10 @@ local function upgradeSpellDescToFormattedText(nodeSpell)
 				if nodeLinkedSpells then
 					if nodeLinkedSpells.getChildCount() > 0 then
 						sValue = sValue .. '<linklist>'
-						for _,v in pairs(nodeLinkedSpells.getChildren()) do
+						for _, v in pairs(nodeLinkedSpells.getChildren()) do
 							local sLinkName = DB.getValue(v, 'linkedname', '')
 							local sLinkClass, sLinkRecord = DB.getValue(v, 'link', '', '')
-							sValue = (
-								sValue .. '<link class=\'' .. sLinkClass .. '\' recordname=\'' .. sLinkRecord .. '\'>' .. sLinkName .. '</link>'
-							)
+							sValue = (sValue .. '<link class=\'' .. sLinkClass .. '\' recordname=\'' .. sLinkRecord .. '\'>' .. sLinkName .. '</link>')
 						end
 						sValue = sValue .. '</linklist>'
 					end
@@ -144,10 +125,8 @@ local function updateSpellDescString(nodeSpell)
 			if nodeLinkedSpells then
 				local nIndex = 1;
 				local nLinkStartB, nLinkStartE, sClass, sRecord = string.find(
-					sValue,
-					'<link class=\'([^\']*)\' recordname=\'([^\']*)\'>',
-					nIndex
-				);
+								                                                  sValue, '<link class=\'([^\']*)\' recordname=\'([^\']*)\'>', nIndex
+				                                                  );
 				while nLinkStartB and sClass and sRecord do
 					local nLinkEndB, nLinkEndE = string.find(sValue, '</link>', nLinkStartE + 1);
 
@@ -161,9 +140,7 @@ local function updateSpellDescString(nodeSpell)
 						end
 
 						nIndex = nLinkEndE + 1;
-						nLinkStartB, nLinkStartE, sClass, sRecord = string.find(
-							sValue, '<link class=\'([^\']*)\' recordname=\'([^\']*)\'>', nIndex
-						);
+						nLinkStartB, nLinkStartE, sClass, sRecord = string.find(sValue, '<link class=\'([^\']*)\' recordname=\'([^\']*)\'>', nIndex);
 					else
 						nLinkStartB = nil;
 					end
@@ -173,9 +150,7 @@ local function updateSpellDescString(nodeSpell)
 	end
 end
 
-function onValueChanged()
-	updateSpellDescString(window.getDatabaseNode())
-end
+function onValueChanged() updateSpellDescString(window.getDatabaseNode()) end
 
 function onInit()
 	local sDesc = window.description.getValue()
