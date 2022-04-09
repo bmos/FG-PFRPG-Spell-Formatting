@@ -1,16 +1,24 @@
-All of the code written expressly for this extension was created by Wil Thieme (bmos).
+MIT License
 
-SmiteWorks owns rights to code sections copied from their rulesets. These code sections are used and modified by permission for FG community development and are not covered by the GNU General Public License.
+Copyright (c) 2022 Wil Thieme
 
-Spell Formatting is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. Spell Formatting is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the [GNU General Public License](https://www.gnu.org/licenses/) for more details.
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
-"Fantasy Grounds" is a trademark of SmiteWorks USA, LLC.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
 
-"Fantasy Grounds" is Copyright 2004-2020 SmiteWorks USA LLC.
-
-The CoreRPG ruleset and all included files are copyright 2004-2020, Smiteworks USA LLC.
-
-The 3.5E ruleset and all included files are copyright 2004-2020, Smiteworks USA LLC.
-
-The PFRPG ruleset and all included files are copyright 2004-2020, Smiteworks USA LLC.
+"Fantasy Grounds" is a trademark of SmiteWorks USA LLC and is Copyright 2004-2022 SmiteWorks USA LLC.
+The CoreRPG, 3.5E, 4E, 5E, PFRPG, PFRPG2, and SFRPG rulesets and all files included therein are copyright 2004-2021, Smiteworks USA LLC.
