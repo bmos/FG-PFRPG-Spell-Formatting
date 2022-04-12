@@ -124,9 +124,7 @@ local function updateSpellDescString(nodeSpell)
 			local nodeLinkedSpells = nodeSpell.createChild('linkedspells');
 			if nodeLinkedSpells then
 				local nIndex = 1;
-				local nLinkStartB, nLinkStartE, sClass, sRecord = string.find(
-								                                                  sValue, '<link class=\'([^\']*)\' recordname=\'([^\']*)\'>', nIndex
-				                                                  );
+				local nLinkStartB, nLinkStartE, sClass, sRecord = string.find(sValue, '<link class=\'([^\']*)\' recordname=\'([^\']*)\'>', nIndex);
 				while nLinkStartB and sClass and sRecord do
 					local nLinkEndB, nLinkEndE = string.find(sValue, '</link>', nLinkStartE + 1);
 
