@@ -1,9 +1,9 @@
 --
 -- Please see the LICENSE.md file included with this distribution for attribution and copyright information.
 --
-local addSpell_old
 
 ---	This function copies the fully-formatted text into newly-created spells
+local addSpell_old
 local function addSpell_new(nodeSource, nodeSpellClass, nLevel, ...)
 	-- Validate
 	if not nodeSource or not nodeSpellClass or not nLevel then return end

@@ -148,6 +148,7 @@ local function updateSpellDescString(nodeSpell)
 	end
 end
 
+-- luacheck: globals onValueChanged
 function onValueChanged() updateSpellDescString(window.getDatabaseNode()) end
 
 function onInit()
