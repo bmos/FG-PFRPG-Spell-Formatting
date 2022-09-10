@@ -2,43 +2,19 @@
 -- Please see the LICENSE.md file included with this distribution for attribution and copyright information.
 --
 local function getReferenceSpell(string_spell_name)
-	local string_spell_name_lower = string_spell_name:lower()
-	local is_greater = (string.find(string_spell_name_lower, ', greater') ~= nil)
-	local is_lesser = (string.find(string_spell_name_lower, ', lesser') ~= nil)
-	local is_communal = (string.find(string_spell_name_lower, ', communal') ~= nil)
-	local is_mass = (string.find(string_spell_name_lower, ', mass') ~= nil)
-	local is_maximized = (string.find(string_spell_name_lower, 'maximized') ~= nil)
-	local is_empowered = (string.find(string_spell_name_lower, 'empowered') ~= nil)
-	local is_quickened = (string.find(string_spell_name_lower, 'quickened') ~= nil)
+	local tFormats = { ['Greater'] = false, ['Lesser'] = false, ['Communal'] = false, ['Mass'] = false };
+	local tTrims = { ['Maximized'] = false, ['Heightened'] = false, ['Empowered'] = false, ['Quickened'] = false };
 
 	-- remove tags from spell name
-	if is_greater then
-		string_spell_name = string_spell_name:gsub(', greater', '')
-		string_spell_name = string_spell_name:gsub(', Greater', '')
+	for s, _ in pairs(tFormats) do
+		if string_spell_name:gsub(', '  .. s, '') or string_spell_name:gsub(', '  .. s:lower(), '') then
+			tTrims[s] = true
+		end
 	end
-	if is_lesser then
-		string_spell_name = string_spell_name:gsub(', lesser', '')
-		string_spell_name = string_spell_name:gsub(', Lesser', '')
-	end
-	if is_communal then
-		string_spell_name = string_spell_name:gsub(', communal', '')
-		string_spell_name = string_spell_name:gsub(', Communal', '')
-	end
-	if is_mass then
-		string_spell_name = string_spell_name:gsub(', mass', '')
-		string_spell_name = string_spell_name:gsub(', Mass', '')
-	end
-	if is_maximized then
-		string_spell_name = string_spell_name:gsub('maximized', '')
-		string_spell_name = string_spell_name:gsub('Maximized', '')
-	end
-	if is_empowered then
-		string_spell_name = string_spell_name:gsub('empowered', '')
-		string_spell_name = string_spell_name:gsub('Empowered', '')
-	end
-	if is_quickened then
-		string_spell_name = string_spell_name:gsub('quickened', '')
-		string_spell_name = string_spell_name:gsub('Quickened', '')
+	for s, _ in pairs(tTrims) do
+		if string_spell_name:gsub(', '  .. s, '') or string_spell_name:gsub(', '  .. s:lower(), '') then
+			tTrims[s] = true
+		end
 	end
 
 	-- remove certain sets of characters
@@ -53,18 +29,19 @@ local function getReferenceSpell(string_spell_name)
 	string_spell_name = string_spell_name:gsub('%A+', '')
 
 	-- remove uppercase D or M at end of name
-	local number_string_length = string.len(string_spell_name)
-	local number_name_end = (string_spell_name:find('D', number_string_length) or string_spell_name:find('M', number_string_length))
+	local number_name_end = string.find(string_spell_name, 'D', string.len(string_spell_name)) or
+					                        string.find(string_spell_name, 'M', string.len(string_spell_name))
 	if number_name_end then string_spell_name = string_spell_name:sub(1, number_name_end - 1) end
 
 	-- convert to lower-case
 	string_spell_name = string_spell_name:lower()
 
 	-- append relevant tags to end of spell name
-	if is_greater then string_spell_name = string_spell_name .. 'greater' end
-	if is_lesser then string_spell_name = string_spell_name .. 'lesser' end
-	if is_communal then string_spell_name = string_spell_name .. 'communal' end
-	if is_mass then string_spell_name = string_spell_name .. 'mass' end
+	for s, v in pairs(tFormats) do
+		if tTrims[v] then
+			string_spell_name = string_spell_name .. ', ' .. s
+		end
+	end
 
 	return (DB.findNode('spelldesc.' .. string_spell_name .. '@*') or DB.findNode('reference.spells.' .. string_spell_name .. '@*'))
 end
