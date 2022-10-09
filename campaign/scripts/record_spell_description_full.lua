@@ -2,19 +2,15 @@
 -- Please see the LICENSE.md file included with this distribution for attribution and copyright information.
 --
 local function getReferenceSpell(string_spell_name)
-	local tFormats = { ['Greater'] = false, ['Lesser'] = false, ['Communal'] = false, ['Mass'] = false };
-	local tTrims = { ['Maximized'] = false, ['Heightened'] = false, ['Empowered'] = false, ['Quickened'] = false };
+	local tFormats = { ['Greater'] = false, ['Lesser'] = false, ['Communal'] = false, ['Mass'] = false }
+	local tTrims = { ['Maximized'] = false, ['Heightened'] = false, ['Empowered'] = false, ['Quickened'] = false }
 
 	-- remove tags from spell name
 	for s, _ in pairs(tFormats) do
-		if string_spell_name:gsub(', '  .. s, '') or string_spell_name:gsub(', '  .. s:lower(), '') then
-			tTrims[s] = true
-		end
+		if string_spell_name:gsub(', ' .. s, '') or string_spell_name:gsub(', ' .. s:lower(), '') then tTrims[s] = true end
 	end
 	for s, _ in pairs(tTrims) do
-		if string_spell_name:gsub(', '  .. s, '') or string_spell_name:gsub(', '  .. s:lower(), '') then
-			tTrims[s] = true
-		end
+		if string_spell_name:gsub(', ' .. s, '') or string_spell_name:gsub(', ' .. s:lower(), '') then tTrims[s] = true end
 	end
 
 	-- remove certain sets of characters
@@ -29,8 +25,8 @@ local function getReferenceSpell(string_spell_name)
 	string_spell_name = string_spell_name:gsub('%A+', '')
 
 	-- remove uppercase D or M at end of name
-	local number_name_end = string.find(string_spell_name, 'D', string.len(string_spell_name)) or
-					                        string.find(string_spell_name, 'M', string.len(string_spell_name))
+	local number_name_end = string.find(string_spell_name, 'D', string.len(string_spell_name))
+		or string.find(string_spell_name, 'M', string.len(string_spell_name))
 	if number_name_end then string_spell_name = string_spell_name:sub(1, number_name_end - 1) end
 
 	-- convert to lower-case
@@ -38,9 +34,7 @@ local function getReferenceSpell(string_spell_name)
 
 	-- append relevant tags to end of spell name
 	for s, v in pairs(tFormats) do
-		if tTrims[v] then
-			string_spell_name = string_spell_name .. ', ' .. s
-		end
+		if tTrims[v] then string_spell_name = string_spell_name .. ', ' .. s end
 	end
 
 	return (DB.findNode('spelldesc.' .. string_spell_name .. '@*') or DB.findNode('reference.spells.' .. string_spell_name .. '@*'))
@@ -74,7 +68,7 @@ local function upgradeSpellDescToFormattedText(nodeSpell)
 						for _, v in pairs(nodeLinkedSpells.getChildren()) do
 							local sLinkName = DB.getValue(v, 'linkedname', '')
 							local sLinkClass, sLinkRecord = DB.getValue(v, 'link', '', '')
-							sValue = (sValue .. '<link class=\'' .. sLinkClass .. '\' recordname=\'' .. sLinkRecord .. '\'>' .. sLinkName .. '</link>')
+							sValue = (sValue .. "<link class='" .. sLinkClass .. "' recordname='" .. sLinkRecord .. "'>" .. sLinkName .. '</link>')
 						end
 						sValue = sValue .. '</linklist>'
 					end
@@ -89,35 +83,35 @@ end
 --- This function saves changes made to the formattedtext in the description_full field back to the basic string version.
 --	This is good protection in case the extension is removed in the future. With this in place, no custom notes/clarifications should be lost.
 local function updateSpellDescString(nodeSpell)
-	local nodeDesc = nodeSpell.getChild('description_full');
+	local nodeDesc = nodeSpell.getChild('description_full')
 	if nodeDesc then
-		local sDescType = nodeDesc.getType();
+		local sDescType = nodeDesc.getType()
 		if sDescType == 'formattedtext' then
-			local sDesc = nodeDesc.getText();
-			local sValue = nodeDesc.getValue();
+			local sDesc = nodeDesc.getText()
+			local sValue = nodeDesc.getValue()
 
-			DB.setValue(nodeSpell, 'description', 'string', sDesc);
+			DB.setValue(nodeSpell, 'description', 'string', sDesc)
 
-			local nodeLinkedSpells = nodeSpell.createChild('linkedspells');
+			local nodeLinkedSpells = nodeSpell.createChild('linkedspells')
 			if nodeLinkedSpells then
-				local nIndex = 1;
-				local nLinkStartB, nLinkStartE, sClass, sRecord = string.find(sValue, '<link class=\'([^\']*)\' recordname=\'([^\']*)\'>', nIndex);
+				local nIndex = 1
+				local nLinkStartB, nLinkStartE, sClass, sRecord = string.find(sValue, "<link class='([^']*)' recordname='([^']*)'>", nIndex)
 				while nLinkStartB and sClass and sRecord do
-					local nLinkEndB, nLinkEndE = string.find(sValue, '</link>', nLinkStartE + 1);
+					local nLinkEndB, nLinkEndE = string.find(sValue, '</link>', nLinkStartE + 1)
 
 					if nLinkEndB then
-						local sText = string.sub(sValue, nLinkStartE + 1, nLinkEndB - 1);
+						local sText = string.sub(sValue, nLinkStartE + 1, nLinkEndB - 1)
 
-						local nodeLink = nodeLinkedSpells.createChild();
+						local nodeLink = nodeLinkedSpells.createChild()
 						if nodeLink then
-							DB.setValue(nodeLink, 'link', 'windowreference', sClass, sRecord);
-							DB.setValue(nodeLink, 'linkedname', 'string', sText);
+							DB.setValue(nodeLink, 'link', 'windowreference', sClass, sRecord)
+							DB.setValue(nodeLink, 'linkedname', 'string', sText)
 						end
 
-						nIndex = nLinkEndE + 1;
-						nLinkStartB, nLinkStartE, sClass, sRecord = string.find(sValue, '<link class=\'([^\']*)\' recordname=\'([^\']*)\'>', nIndex);
+						nIndex = nLinkEndE + 1
+						nLinkStartB, nLinkStartE, sClass, sRecord = string.find(sValue, "<link class='([^']*)' recordname='([^']*)'>", nIndex)
 					else
-						nLinkStartB = nil;
+						nLinkStartB = nil
 					end
 				end
 			end
