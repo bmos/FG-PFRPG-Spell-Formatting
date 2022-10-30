@@ -4,7 +4,7 @@
 This extension modifies the character-specific copies of spells (accessed via their actions tab) to allow fully-formatted descriptions including italics, tables (detect magic is a great example), links, etc. At this time, you need to drag the spells into actions after installing this extension for the special formatting to be included.
 
 # Compatibility
-This extension has been tested with [FantasyGrounds Unity](https://www.fantasygrounds.com/home/FantasyGroundsUnity.php) 4.1.13 (2022-01-05).
+This extension has been tested with [FantasyGrounds Unity](https://www.fantasygrounds.com/home/FantasyGroundsUnity.php) 4.3.0 (2022-10-20).
 
 # Features
 * Spells on the actions tab will display with formatting when opened by clicking the link button.
