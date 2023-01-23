@@ -37,7 +37,7 @@ local function getReferenceSpell(string_spell_name)
 		if tTrims[v] then string_spell_name = string_spell_name .. ', ' .. s end
 	end
 
-	return (DB.findNode('spelldesc.' .. string_spell_name .. '@*') or DB.findNode('reference.spells.' .. string_spell_name .. '@*'))
+	return DB.findNode('spelldesc.' .. string_spell_name .. '@*') or DB.findNode('reference.spells.' .. string_spell_name .. '@*')
 end
 
 --- This function converts an existing string value into formattedtext
@@ -47,25 +47,25 @@ end
 local function upgradeSpellDescToFormattedText(nodeSpell)
 	if not nodeSpell then return end
 
-	local nodeDesc = nodeSpell.getChild('description')
+	local nodeDesc = DB.getChild(nodeSpell, 'description')
 	if nodeDesc then
-		if not string.match(nodeDesc.getValue(), '<p>', 1) then
+		if not string.match(DB.getValue(nodeDesc), '<p>', 1) then
 			local nodeReferenceSpell = getReferenceSpell(string.lower(DB.getValue(nodeSpell, 'name')))
 			if nodeReferenceSpell then
-				local nodeReferenceDesc = nodeReferenceSpell.getChild('description')
-				DB.copyNode(nodeReferenceDesc, nodeSpell.createChild('description_full', 'formattedtext'))
+				local nodeReferenceDesc = DB.getChild(nodeReferenceSpell, 'description')
+				DB.copyNode(nodeReferenceDesc, DB.createChild(nodeSpell, 'description_full', 'formattedtext'))
 			else
-				local sValue = '<p>' .. nodeDesc.getValue() .. '</p>'
+				local sValue = '<p>' .. DB.getValue(nodeDesc) .. '</p>'
 				sValue = sValue:gsub('\n\n', '</p><p>')
 				sValue = sValue:gsub('\n', '</p><p>')
 				sValue = sValue:gsub('\r\r', '</p><p>')
 				sValue = sValue:gsub('\r', '</p><p>')
 
-				local nodeLinkedSpells = nodeSpell.getChild('linkedspells')
+				local nodeLinkedSpells = DB.getChild(nodeSpell, 'linkedspells')
 				if nodeLinkedSpells then
 					if nodeLinkedSpells.getChildCount() > 0 then
 						sValue = sValue .. '<linklist>'
-						for _, v in pairs(nodeLinkedSpells.getChildren()) do
+						for _, v in pairs(DB.getChildren(nodeLinkedSpells)) do
 							local sLinkName = DB.getValue(v, 'linkedname', '')
 							local sLinkClass, sLinkRecord = DB.getValue(v, 'link', '', '')
 							sValue = (sValue .. "<link class='" .. sLinkClass .. "' recordname='" .. sLinkRecord .. "'>" .. sLinkName .. '</link>')
@@ -83,16 +83,16 @@ end
 --- This function saves changes made to the formattedtext in the description_full field back to the basic string version.
 --	This is good protection in case the extension is removed in the future. With this in place, no custom notes/clarifications should be lost.
 local function updateSpellDescString(nodeSpell)
-	local nodeDesc = nodeSpell.getChild('description_full')
+	local nodeDesc = DB.getChild(nodeSpell, 'description_full')
 	if nodeDesc then
-		local sDescType = nodeDesc.getType()
+		local sDescType = DB.getType(nodeDesc)
 		if sDescType == 'formattedtext' then
-			local sDesc = nodeDesc.getText()
-			local sValue = nodeDesc.getValue()
+			local sDesc = DB.getText(nodeDesc)
+			local sValue = DB.getValue(nodeDesc)
 
 			DB.setValue(nodeSpell, 'description', 'string', sDesc)
 
-			local nodeLinkedSpells = nodeSpell.createChild('linkedspells')
+			local nodeLinkedSpells = DB.createChild(nodeSpell, 'linkedspells')
 			if nodeLinkedSpells then
 				local nIndex = 1
 				local nLinkStartB, nLinkStartE, sClass, sRecord = string.find(sValue, "<link class='([^']*)' recordname='([^']*)'>", nIndex)
@@ -102,7 +102,7 @@ local function updateSpellDescString(nodeSpell)
 					if nLinkEndB then
 						local sText = string.sub(sValue, nLinkStartE + 1, nLinkEndB - 1)
 
-						local nodeLink = nodeLinkedSpells.createChild()
+						local nodeLink = DB.createChild(nodeLinkedSpells)
 						if nodeLink then
 							DB.setValue(nodeLink, 'link', 'windowreference', sClass, sRecord)
 							DB.setValue(nodeLink, 'linkedname', 'string', sText)
@@ -127,6 +127,6 @@ function onInit()
 	local sDescFull = window.description_full.getValue()
 
 	if sDesc ~= '' and (sDescFull == '' or sDescFull == '<p></p>' or sDescFull == '<p />') then
-		upgradeSpellDescToFormattedText(getDatabaseNode().getParent())
+		upgradeSpellDescToFormattedText(DB.getParent(getDatabaseNode()))
 	end
 end
