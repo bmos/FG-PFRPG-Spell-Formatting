@@ -65,7 +65,7 @@ local function upgradeSpellDescToFormattedText(nodeSpell)
 				if nodeLinkedSpells then
 					if nodeLinkedSpells.getChildCount() > 0 then
 						sValue = sValue .. '<linklist>'
-						for _, v in pairs(DB.getChildren(nodeLinkedSpells)) do
+						for _, v in ipairs(DB.getChildList(nodeLinkedSpells)) do
 							local sLinkName = DB.getValue(v, 'linkedname', '')
 							local sLinkClass, sLinkRecord = DB.getValue(v, 'link', '', '')
 							sValue = (sValue .. "<link class='" .. sLinkClass .. "' recordname='" .. sLinkRecord .. "'>" .. sLinkName .. '</link>')
