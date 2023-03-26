@@ -17,7 +17,7 @@
 		</ruleset>
 	</properties>
 
-	<announcement text="https://github.com/bmos/FG-PFRPG-Spell-Formatting\rPFRPG Spell Formatting v1.8:\rThis extension allows full formatting of the spell descriptions linked from the actions tab."  font="emotefont" />
+	<announcement text="https://github.com/bmos/FG-PFRPG-Spell-Formatting\rPFRPG Spell Formatting v1.8:\rThis extension allows full formatting of the spell descriptions linked from the actions tab."  font="emotefont" icon="module_loaded" />
 
 	<base>
 		<!-- Campaign Records -->
