@@ -34,10 +34,10 @@ local function getReferenceSpell(string_spell_name)
 
 	-- append relevant tags to end of spell name
 	for s, v in pairs(tFormats) do
-		if tTrims[v] then string_spell_name = string_spell_name .. ', ' .. s end
+		if tTrims[v] then string_spell_name = string.format('%s, %s', string_spell_name, s) end
 	end
 
-	return DB.findNode('spelldesc.' .. string_spell_name .. '@*') or DB.findNode('reference.spells.' .. string_spell_name .. '@*')
+	return DB.findNode(string.format('spelldesc.%s@*', string_spell_name)) or DB.findNode(string.format('reference.spells.%s@*', string_spell_name))
 end
 
 --- This function converts an existing string value into formattedtext
@@ -68,7 +68,7 @@ local function upgradeSpellDescToFormattedText(nodeSpell)
 						for _, v in ipairs(DB.getChildList(nodeLinkedSpells)) do
 							local sLinkName = DB.getValue(v, 'linkedname', '')
 							local sLinkClass, sLinkRecord = DB.getValue(v, 'link', '', '')
-							sValue = (sValue .. "<link class='" .. sLinkClass .. "' recordname='" .. sLinkRecord .. "'>" .. sLinkName .. '</link>')
+							sValue = string.format("%s<link class='%s' recordname='%s'>%s</link>", sValue, sLinkClass, sLinkRecord, sLinkName)
 						end
 						sValue = sValue .. '</linklist>'
 					end
