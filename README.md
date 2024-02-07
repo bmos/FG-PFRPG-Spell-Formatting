@@ -1,4 +1,4 @@
-[![Build FG-Usable File](https://github.com/bmos/FG-PFRPG-Spell-Formatting/actions/workflows/create-ext.yml/badge.svg)](https://github.com/bmos/FG-PFRPG-Spell-Formatting/actions/workflows/create-ext.yml) [![Luacheck](https://github.com/bmos/FG-PFRPG-Spell-Formatting/actions/workflows/luacheck.yml/badge.svg)](https://github.com/bmos/FG-PFRPG-Spell-Formatting/actions/workflows/luacheck.yml)
+[![Build FG-Usable File](https://github.com/bmos/FG-PFRPG-Spell-Formatting/actions/workflows/release.yml/badge.svg)](https://github.com/bmos/FG-PFRPG-Spell-Formatting/actions/workflows/release.yml) [![Luacheck](https://github.com/bmos/FG-PFRPG-Spell-Formatting/actions/workflows/luacheck.yml/badge.svg)](https://github.com/bmos/FG-PFRPG-Spell-Formatting/actions/workflows/luacheck.yml)
 
 # Spell Formatting
 This extension modifies the character-specific copies of spells (accessed via their actions tab) to allow fully-formatted descriptions including italics, tables (detect magic is a great example), links, etc. At this time, you need to drag the spells into actions after installing this extension for the special formatting to be included.
