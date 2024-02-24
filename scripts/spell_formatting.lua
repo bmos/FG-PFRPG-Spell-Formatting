@@ -6,14 +6,18 @@
 local addSpell_old
 local function addSpell_new(nodeSource, nodeSpellClass, nLevel, ...)
 	-- Validate
-	if not nodeSource or not nodeSpellClass or not nLevel then return end
+	if not nodeSource or not nodeSpellClass or not nLevel then
+		return
+	end
 
 	-- Get the new spell entry
 	local nodeNewSpell = addSpell_old(nodeSource, nodeSpellClass, nLevel, ...)
-	if not nodeNewSpell or type(nodeNewSpell) ~= 'databasenode' then return end
+	if not nodeNewSpell or type(nodeNewSpell) ~= "databasenode" then
+		return
+	end
 
 	-- Copy the formatted spell details over
-	DB.setValue(nodeNewSpell, 'description_full', 'formattedtext', DB.getValue(nodeSource, 'description', '<p></p>'))
+	DB.setValue(nodeNewSpell, "description_full", "formattedtext", DB.getValue(nodeSource, "description", "<p></p>"))
 
 	return nodeNewSpell
 end
@@ -24,4 +28,6 @@ function onInit()
 	SpellManager.addSpell = addSpell_new
 end
 
-function onClose() SpellManager.addSpell = addSpell_old end
+function onClose()
+	SpellManager.addSpell = addSpell_old
+end
